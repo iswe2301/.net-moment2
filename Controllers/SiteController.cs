@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Moment2_MVC.Models; // Importera modellen
 
 namespace Moment2_MVC.Controllers
 {
@@ -13,75 +14,83 @@ namespace Moment2_MVC.Controllers
             return View(); // Returnera vy
         }
 
-        // Action för att gissa nummer
-        [HttpGet]
-        public IActionResult GuessNumber()
+        // Metod för att skapa en instans av GuessNumberModel
+        private GuessNumberModel CreateModel()
         {
-            // Kontrollera om cookien med det slumpade numret finns
-            if (!HttpContext.Request.Cookies.ContainsKey("RandomNumber"))
-            {
-                // Skapa ett slumpat nummer och spara i cookien
-                int randomNumber = random.Next(1, 101);
-                HttpContext.Response.Cookies.Append("RandomNumber", randomNumber.ToString());
-
-                // Spara antalet försök i cookien och sätt till 0 som default
-                HttpContext.Response.Cookies.Append("Attempts", "0");
-
-            }
-            ViewBag.Message = "Gissa ett nummer mellan 1 och 100"; // Skapa meddelande
-            ViewBag.CanPlayAgain = false; // Dölj knappen för att spela igen
-            return View(); // Returnera vy
-        }
-
-        // Action för att gissa nummer
-        [HttpPost]
-        public IActionResult GuessNumber(int guess)
-        {
-            // Hämta slumpnumret samt antalet försök från cookien
+            // Hämta cookies
             string? randomNumberCookie = HttpContext.Request.Cookies["RandomNumber"];
             string? attemptsCookie = HttpContext.Request.Cookies["Attempts"];
 
             // Kontrollera om cookiesen saknas
             if (string.IsNullOrEmpty(randomNumberCookie) || string.IsNullOrEmpty(attemptsCookie))
             {
-                // Om cookies saknas, ge ett felmeddelande
-                ViewBag.Message = "Ett fel inträffade. Starta om spelet.";
-                ViewBag.CanPlayAgain = true; // Visa knappen för att spela igen
-                return View(); // Returnera vy
+                // Om cookies saknas, skapa nya värden
+                int randomNumber = random.Next(1, 101);
+                HttpContext.Response.Cookies.Append("RandomNumber", randomNumber.ToString());
+                HttpContext.Response.Cookies.Append("Attempts", "0");
+
+                // Skapa en ny instans av GuessNumberModel med värdena och returnera modellen
+                return new GuessNumberModel
+                {
+                    RandomNumber = randomNumber,
+                    Attempts = 0,
+                    Message = "Gissa ett nummer mellan 1 och 100!",
+                    CanPlayAgain = false
+                };
             }
 
-            // Konvertera slumpnumret från sträng till heltal
-            int randomNumber = int.Parse(randomNumberCookie);
-            int attempts = int.Parse(attemptsCookie);
+            // Skapa en ny instans av GuessNumberModel med värden från cookiesen och returnera modellen
+            return new GuessNumberModel
+            {
+                RandomNumber = int.Parse(randomNumberCookie),
+                Attempts = int.Parse(attemptsCookie),
+                Message = "Gissa ett nummer mellan 1 och 100!",
+                CanPlayAgain = false
+            };
+        }
+
+        // Action för att gissa nummer
+        [HttpGet]
+        public IActionResult GuessNumber()
+        {
+            GuessNumberModel model = CreateModel(); // Hämta modellen från CreateModel-metoden
+            return View(model); // Returnera vy med modellen
+        }
+
+        // Action för att gissa nummer
+        [HttpPost]
+        public IActionResult GuessNumber(int guess)
+        {
+            // Hämta modellen från CreateModel-metoden
+            GuessNumberModel model = CreateModel();
 
             // Öka antalet försök med 1 och spara i cookien
-            attempts++;
-            HttpContext.Response.Cookies.Append("Attempts", attempts.ToString());
+            model.Attempts++;
+            HttpContext.Response.Cookies.Append("Attempts", model.Attempts.ToString());
 
             // Kontrollera om gissningen är rätt och ge feedback
-            if (guess == randomNumber)
+            if (guess == model.RandomNumber)
             {
                 // Visa meddelande beroende på antalet försök
-                ViewBag.Message = attempts == 1 ? $"Wow! Du gissade rätt på första försöket!" : $"Grattis! Du gissade rätt på {attempts} försök!";
-                ViewBag.CanPlayAgain = true; // Visa knappen för att spela igen
-                HttpContext.Response.Cookies.Delete("RandomNumber"); // Ta bort cookien för numret
-                HttpContext.Response.Cookies.Delete("Attempts"); // Ta bort cookien för antal försök
+                model.Message = model.Attempts == 1 ? $"Wow! Du gissade rätt på första försöket!" : $"Grattis! Du gissade rätt på {model.Attempts} försök!";
+                model.CanPlayAgain = true; // Visa knappen för att spela igen
+
+                // Ta bort cookies när spelet är klart
+                HttpContext.Response.Cookies.Delete("RandomNumber");
+                HttpContext.Response.Cookies.Delete("Attempts");
             }
             // Kontrollera om gissningen är mindre än det slumpade talet och ge feedback
-            else if (guess < randomNumber)
+            else if (guess < model.RandomNumber)
             {
-                ViewBag.Message = $"Fel! Talet är större än {guess}. Försök igen.";
-                ViewBag.CanPlayAgain = false; // Dölj knappen för att spela igen
-
+                model.Message = $"Fel! Talet är större än {guess}. Försök igen.";
             }
             // Kontrollera om gissningen är större än det slumpade talet och ge feedback
             else
             {
-                ViewBag.Message = $"Fel! Talet är mindre än {guess}. Försök igen.";
-                ViewBag.CanPlayAgain = false; // Dölj knappen för att spela igen
+                model.Message = $"Fel! Talet är mindre än {guess}. Försök igen.";
             }
 
-            return View(); // Returnera vy
+            return View(model); // Returnera vy med modellen
         }
 
         // Action för att spela igen
@@ -91,9 +100,11 @@ namespace Moment2_MVC.Controllers
             int randomNumber = random.Next(1, 101); // Skapa ett nytt slumpat nummer
             HttpContext.Response.Cookies.Append("RandomNumber", randomNumber.ToString()); // Spara numret i cookien
             HttpContext.Response.Cookies.Append("Attempts", "0"); // Spara antalet försök i cookien och sätt till 0 som default
-            ViewBag.Message = "Gissa ett nummer mellan 1 och 100!"; // Återställ meddelandet
-            ViewBag.CanPlayAgain = false; // Dölj knappen för att spela igen
-            return View("GuessNumber"); // Returnera vy
+
+            // Hämta modellen från CreateModel-metoden
+            GuessNumberModel model = CreateModel();
+
+            return View("GuessNumber", model); // Returnera vy med modellen
         }
     }
 }
