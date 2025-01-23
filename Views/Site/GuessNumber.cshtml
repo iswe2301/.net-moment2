@@ -1,0 +1,27 @@
+@{
+    ViewData["Title"] = "Gissningslek"; // Titel på sidan
+}
+
+<!-- Visa titel -->
+<h1>@ViewData["Title"]</h1>
+
+<!-- Visa meddelande -->
+<p>@ViewBag.Message</p>
+
+<!-- Kontrollera om CanPlayAgain är satt och är true -->
+@if ((bool)(ViewBag.CanPlayAgain ?? false))
+{
+    <!-- Visa knappen för att Spela igen -->
+    <form method="post" asp-action="PlayAgain">
+        <button type="submit">Spela igen</button>
+    </form>
+}
+else
+{
+    <!-- Formulär för att mata in ny gissning -->
+    <form method="post" asp-action="GuessNumber">
+        <label for="guess">Nummer</label>
+        <input type="number" id="guess" name="guess"/>
+        <button type="submit">Gissa</button>
+    </form>
+}
