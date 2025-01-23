@@ -1,3 +1,5 @@
+@model Moment2_MVC.Models.GuessNumberModel // Använd modellen GuessNumberModel
+
 @{
     ViewData["Title"] = "Gissningslek"; // Titel på sidan
 }
@@ -5,11 +7,11 @@
 <!-- Visa titel -->
 <h1>@ViewData["Title"]</h1>
 
-<!-- Visa meddelande -->
-<p>@ViewBag.Message</p>
+<!-- Visa meddelande från modellen -->
+<p>@Model.Message</p>
 
-<!-- Kontrollera om CanPlayAgain är satt och är true -->
-@if ((bool)(ViewBag.CanPlayAgain ?? false))
+<!-- Kontrollera om CanPlayAgain är true -->
+@if (Model.CanPlayAgain)
 {
     <!-- Visa knappen för att Spela igen -->
     <form method="post" asp-action="PlayAgain">
