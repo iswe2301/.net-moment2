@@ -22,7 +22,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Site}/{action=Start}/{id?}") // Ändra default route till egen controller/action
     .WithStaticAssets();
 
 
