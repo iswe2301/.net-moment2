@@ -20,6 +20,7 @@ namespace Moment2_MVC.Controllers
             // Hämta cookies
             string? randomNumberCookie = HttpContext.Request.Cookies["RandomNumber"];
             string? attemptsCookie = HttpContext.Request.Cookies["Attempts"];
+            string? messageCookie = HttpContext.Request.Cookies["Message"];
 
             // Kontrollera om cookiesen saknas
             if (string.IsNullOrEmpty(randomNumberCookie) || string.IsNullOrEmpty(attemptsCookie))
@@ -28,6 +29,7 @@ namespace Moment2_MVC.Controllers
                 int randomNumber = random.Next(1, 101);
                 HttpContext.Response.Cookies.Append("RandomNumber", randomNumber.ToString());
                 HttpContext.Response.Cookies.Append("Attempts", "0");
+                HttpContext.Response.Cookies.Append("Message", "Gissa ett nummer mellan 1 och 100!");
 
                 // Skapa en ny instans av GuessNumberModel med värdena och returnera modellen
                 return new GuessNumberModel
@@ -44,7 +46,7 @@ namespace Moment2_MVC.Controllers
             {
                 RandomNumber = int.Parse(randomNumberCookie),
                 Attempts = int.Parse(attemptsCookie),
-                Message = "Gissa ett nummer mellan 1 och 100!",
+                Message = string.IsNullOrEmpty(messageCookie) ? "Gissa ett nummer mellan 1 och 100!" : messageCookie, // Om meddelandet är tomt, sätt default-värdet
                 CanPlayAgain = false
             };
         }
@@ -78,6 +80,7 @@ namespace Moment2_MVC.Controllers
                 // Ta bort cookies när spelet är klart
                 HttpContext.Response.Cookies.Delete("RandomNumber");
                 HttpContext.Response.Cookies.Delete("Attempts");
+                HttpContext.Response.Cookies.Delete("Message");
             }
             // Kontrollera om gissningen är mindre än det slumpade talet och ge feedback
             else if (guess < model.RandomNumber)
@@ -89,6 +92,8 @@ namespace Moment2_MVC.Controllers
             {
                 model.Message = $"Fel! Talet är mindre än {guess}. Försök igen.";
             }
+
+            HttpContext.Response.Cookies.Append("Message", model.Message); // Spara det nya meddelandet i cookien
 
             return View(model); // Returnera vy med modellen
         }
