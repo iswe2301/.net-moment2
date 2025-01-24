@@ -1,5 +1,16 @@
 @{
-    ViewData["Title"] = "Start"; // Sidans titel
+    ViewData["Title"] = ViewBag.Title;
 }
 
-<h1>Välkommen!</h1>
+<!-- Visa titel -->
+<h1>@ViewData["Title"]</h1>
+
+<!-- Visa välkomstmeddelande från controllern -->
+<h2>@ViewBag.Welcome</h2>
+
+<h3>Spelregler</h3>
+<!-- Visa reglerna för spelet genom partial view -->
+@await Html.PartialAsync("_Rules")
+
+<!-- Visa meddelande från controllern -->
+<a href="/Site/GuessNumber">@ViewBag.Message</a>
