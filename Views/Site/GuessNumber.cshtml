@@ -1,11 +1,15 @@
 @model Moment2_MVC.Models.GuessNumberModel // Använd modellen GuessNumberModel
 
 @{
-    ViewData["Title"] = "Gissningslek"; // Titel på sidan
+    ViewData["Title"] = "Spela"; // Titel på sidan
 }
 
 <!-- Visa titel -->
 <h1>@ViewData["Title"]</h1>
+
+<!-- Visa reglerna för spelet genom partial view -->
+<h2>Spelregler</h2>
+@await Html.PartialAsync("_Rules")
 
 <!-- Visa meddelande från modellen -->
 <p>@Model.Message</p>
@@ -23,7 +27,7 @@ else
     <!-- Formulär för att mata in ny gissning -->
     <form method="post" asp-action="GuessNumber">
         <label for="guess">Nummer</label>
-        <input type="number" id="guess" name="guess"/>
+        <input type="number" id="guess" name="guess" />
         <button type="submit">Gissa</button>
     </form>
 }
