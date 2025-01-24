@@ -27,7 +27,9 @@ else
     <!-- Formulär för att mata in ny gissning -->
     <form method="post" asp-controller="Site" asp-action="GuessNumber">
         <label for="guess">Nummer</label>
-        <input type="number" id="guess" name="guess" />
+        <input type="number" id="guess" name="Guess" />
+        <!-- Visa valideringsmeddelande -->
+        <span asp-validation-for="Guess"></span>
         <button type="submit">Gissa</button>
     </form>
 }
