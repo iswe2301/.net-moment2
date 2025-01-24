@@ -127,5 +127,27 @@ namespace Moment2_MVC.Controllers
 
             return View("GuessNumber", model); // Returnera vy med modellen
         }
+
+        // Action för att visa kontaktformuläret
+        [HttpGet]
+        [Route("kontakt")] // Ändra url till /kontakt
+        public IActionResult Contact()
+        {
+            return View(new ContactFormModel()); // Returnera instans av modellen till vyn
+        }
+
+        // Action för att hantera inskickat kontaktformulär
+        [HttpPost]
+        [Route("kontakt")] // Ändra url till /kontakt
+        public IActionResult Contact(ContactFormModel model)
+        {
+            // Kontrollera om modellen är ogiltig
+            if (!ModelState.IsValid)
+            {
+                return View(model); // Returnera formuläret med valideringsfel
+            }
+            ViewData["SuccessMessage"] = "Tack för ditt meddelande! Vi återkommer inom 1-3 arbetsdagar."; // Visa ett meddelande om att meddelandet skickats
+            return View(new ContactFormModel()); // Returnera ny instans av modellen för att rensa formuläret
+        }
     }
 }
