@@ -39,6 +39,7 @@ namespace Moment2_MVC.Controllers
                 {
                     RandomNumber = randomNumber,
                     Attempts = 0,
+                    Guess = null,
                     Message = "Gissa ett nummer mellan 1 och 100!",
                     CanPlayAgain = false
                 };
@@ -49,6 +50,7 @@ namespace Moment2_MVC.Controllers
             {
                 RandomNumber = int.Parse(randomNumberCookie),
                 Attempts = int.Parse(attemptsCookie),
+                Guess = null,
                 Message = string.IsNullOrEmpty(messageCookie) ? "Gissa ett nummer mellan 1 och 100!" : messageCookie, // Om meddelandet är tomt, sätt default-värdet
                 CanPlayAgain = false
             };
@@ -66,17 +68,22 @@ namespace Moment2_MVC.Controllers
         // Action för att gissa nummer
         [HttpPost]
         [Route("spela")] // Ändra URL till /spela
-        public IActionResult GuessNumber(int guess)
+        public IActionResult GuessNumber(GuessNumberModel model)
         {
-            // Hämta modellen från CreateModel-metoden
-            GuessNumberModel model = CreateModel();
+            // Kontrollera om modellen är ogiltig
+            if (!ModelState.IsValid)
+            {
+                // Om modellen är ogiltig, returnera vy med felmeddelanden
+                model.Message = "Ogiltig gissning! Försök igen.";
+                return View(model);
+            }
 
             // Öka antalet försök med 1 och spara i cookien
             model.Attempts++;
             HttpContext.Response.Cookies.Append("Attempts", model.Attempts.ToString());
 
             // Kontrollera om gissningen är rätt och ge feedback
-            if (guess == model.RandomNumber)
+            if (model.Guess == model.RandomNumber)
             {
                 // Visa meddelande beroende på antalet försök
                 model.Message = model.Attempts == 1 ? $"Wow! Du gissade rätt på första försöket!" : $"Grattis! Du gissade rätt på {model.Attempts} försök!";
@@ -88,14 +95,14 @@ namespace Moment2_MVC.Controllers
                 HttpContext.Response.Cookies.Delete("Message");
             }
             // Kontrollera om gissningen är mindre än det slumpade talet och ge feedback
-            else if (guess < model.RandomNumber)
+            else if (model.Guess < model.RandomNumber)
             {
-                model.Message = $"Fel! Talet är större än {guess}. Försök igen.";
+                model.Message = $"Fel! Talet är större än {model.Guess}. Försök igen.";
             }
             // Kontrollera om gissningen är större än det slumpade talet och ge feedback
             else
             {
-                model.Message = $"Fel! Talet är mindre än {guess}. Försök igen.";
+                model.Message = $"Fel! Talet är mindre än {model.Guess}. Försök igen.";
             }
 
             HttpContext.Response.Cookies.Append("Message", model.Message); // Spara det nya meddelandet i cookien
