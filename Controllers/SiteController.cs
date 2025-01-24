@@ -11,6 +11,9 @@ namespace Moment2_MVC.Controllers
         // Skapa en ny action
         public IActionResult Start()
         {
+            ViewData["Title"] = "Start"; // Skapa en titel
+            ViewBag.Welcome = "Välkommen till gissningsspelet!"; // Skapa en välkomsthälsning
+            ViewBag.Message = "Börja spela"; // Skapa ett meddelande
             return View(); // Returnera vy
         }
 
