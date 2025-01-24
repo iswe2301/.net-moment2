@@ -56,6 +56,7 @@ namespace Moment2_MVC.Controllers
 
         // Action för att gissa nummer
         [HttpGet]
+        [Route("spela")] // Ändra URL till /spela
         public IActionResult GuessNumber()
         {
             GuessNumberModel model = CreateModel(); // Hämta modellen från CreateModel-metoden
@@ -64,6 +65,7 @@ namespace Moment2_MVC.Controllers
 
         // Action för att gissa nummer
         [HttpPost]
+        [Route("spela")] // Ändra URL till /spela
         public IActionResult GuessNumber(int guess)
         {
             // Hämta modellen från CreateModel-metoden
@@ -103,6 +105,7 @@ namespace Moment2_MVC.Controllers
 
         // Action för att spela igen
         [HttpPost]
+        [Route("spela-igen")] // Ändra URL till /spela-igen
         public IActionResult PlayAgain()
         {
             int randomNumber = random.Next(1, 101); // Skapa ett nytt slumpat nummer
