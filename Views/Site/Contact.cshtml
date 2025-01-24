@@ -1,0 +1,49 @@
+@model Moment2_MVC.Models.ContactFormModel // Importera modellen
+
+@{
+    ViewData["Title"] = "Kontakt"; // Titel på sidan
+}
+
+<!-- Visa titel som rubrik -->
+<h1>@ViewData["Title"]</h1>
+
+<!-- Visa meddelande om formuläret skickats annars Visa formuläret -->
+@if (ViewData["SuccessMessage"] != null)
+{
+    <p class="success">@ViewData["SuccessMessage"]</p>
+}
+else
+{
+    <p>Har du frågor eller funderingar? Skicka ett meddelande till oss via kontaktformuläret nedan så återkommer vi.</p>
+    <!-- Formulär för att skicka e-post -->
+    <form method="post" asp-action="Contact" asp-controller="Site">
+        <div>
+            <label for="Name">Namn</label>
+            <!-- Fält för namn med värde från modellen -->
+            <input type="text" id="Name" name="Name" value="@Model.Name" />
+            <!-- Validering med asp-validation-for -->
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div>
+            <label for="Email">E-post</label>
+            <input type="email" id="Email" name="Email" value="@Model.Email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div>
+            <label for="Subject">Ämne</label>
+            <select id="Subject" name="Subject">
+                <option value="" disabled selected>-- Välj ämne --</option>
+                <option value="Fråga">Fråga</option>
+                <option value="Feedback">Feedback</option>
+                <option value="Övrigt">Övrigt</option>
+            </select>
+            <span asp-validation-for="Subject"></span>
+        </div>
+        <div>
+            <label for="Message">Meddelande</label>
+            <textarea id="Message" name="Message">@Model.Message</textarea>
+            <span asp-validation-for="Message"></span>
+        </div>
+        <button type="submit">Skicka</button>
+    </form>
+}
