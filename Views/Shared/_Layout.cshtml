@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="sv">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,45 +10,42 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Moment2_MVC.styles.css" asp-append-version="true" />
 </head>
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Site" asp-action="Start">GISSNINGSSPELET</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Site" asp-action="Start">Start</a>
-                        </li>
-                        <li>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Site" asp-action="GuessNumber">Spela</a>
-                        </li>
-                        <li>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Site" asp-action="Contact">Kontakt</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <h1>Gissningsspelet</h1>
+        <nav>
+            <!-- Knapp för att visa menyn på mobila enheter, anropar JS-funktion -->
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <ul>
+                <!-- Navigeringslänkar med controller och action för routing -->
+                <li>
+                    <a asp-area="" asp-controller="Site" asp-action="Start">Start</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Site" asp-action="GuessNumber">Spela</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Site" asp-action="Contact">Kontakt</a>
+                </li>
+            </ul>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Isa Westling
-        </div>
+    <!-- Huvudinnehåll -->
+    <main>
+        @RenderBody() <!-- Rendera innehållet -->
+        <img src="~/img/questionmark.png" alt="Frågetecken" />
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Isa Westling</p>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
