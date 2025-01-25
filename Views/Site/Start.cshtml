@@ -2,15 +2,14 @@
     ViewData["Title"] = ViewBag.Title;
 }
 
-<!-- Visa titel -->
-<h1>@ViewData["Title"]</h1>
+<section>
+    <!-- Visa välkomstmeddelande från controllern -->
+    <h2>@ViewBag.Welcome</h2>
 
-<!-- Visa välkomstmeddelande från controllern -->
-<h2>@ViewBag.Welcome</h2>
+    <h3>Spelregler</h3>
+    <!-- Visa reglerna för spelet genom partial view -->
+    @await Html.PartialAsync("_Rules")
 
-<h3>Spelregler</h3>
-<!-- Visa reglerna för spelet genom partial view -->
-@await Html.PartialAsync("_Rules")
-
-<!-- Visa meddelande från controllern -->
-<a asp-controller="Site" asp-action="GuessNumber">@ViewBag.Message</a>
+    <!-- Visa meddelande från controllern -->
+    <a asp-controller="Site" asp-action="GuessNumber" class="button">@ViewBag.Message</a>
+</section>
