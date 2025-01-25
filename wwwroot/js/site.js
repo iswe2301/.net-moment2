@@ -1,4 +1,7 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿"use strict";
 
-// Write your JavaScript code.
+// Funktion för att visa/dölja menyn
+function toggleMenu() {
+    const menu = document.querySelector("nav ul"); // Hämtar ul-elementet i nav
+    menu.classList.toggle("active"); // Lägger till eller tar bort klassen "active" på ul-elementet
+}
