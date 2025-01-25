@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Gissningsspelet</title>
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Moment2_MVC.styles.css" asp-append-version="true" />
 </head>
@@ -19,13 +18,14 @@
             <button class="menu-toggle" onclick="toggleMenu()">☰</button>
             <ul>
                 <!-- Navigeringslänkar med controller och action för routing -->
-                <li>
+                <li class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Start" ? "active" : "")">
                     <a asp-area="" asp-controller="Site" asp-action="Start">Start</a>
                 </li>
-                <li>
+                <!-- Aktiv klass om action är GuessNumber -->
+                <li class="@(ViewContext.RouteData.Values["action"]?.ToString() == "GuessNumber" ? "active" : "")">
                     <a asp-area="" asp-controller="Site" asp-action="GuessNumber">Spela</a>
                 </li>
-                <li>
+                <li class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Contact" ? "active" : "")">
                     <a asp-area="" asp-controller="Site" asp-action="Contact">Kontakt</a>
                 </li>
             </ul>
@@ -35,15 +35,13 @@
     <!-- Huvudinnehåll -->
     <main>
         @RenderBody() <!-- Rendera innehållet -->
-        <img src="~/img/questionmark.png" alt="Frågetecken" />
+        <img src="~/img/questionmark.png" alt="Frågetecken" /> <!-- Bild som visas på alla sidor -->
     </main>
 
     <!-- Footer -->
     <footer>
         <p>&copy; 2025 Isa Westling</p>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
