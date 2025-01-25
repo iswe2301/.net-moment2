@@ -108,6 +108,11 @@ h3 {
   margin: 1rem 0;
 }
 
+p {
+  margin: 1rem 0;
+  line-height: 2.6rem;
+}
+
 /* Container för huvudinnehåll */
 main {
   display: flex;
@@ -142,16 +147,83 @@ li {
   margin: 0.5rem 0;
 }
 
-/* Styling för spelmeddelande */
-.game-message {
+/* Styling för formulär */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 2rem 0;
+}
+
+.contact-form {
+  text-align: left;
+  width: 100%;
+  max-width: 500px;
+}
+
+form label {
   font-weight: bold;
+  color: #333;
+}
+
+form input[type="number"],
+form input[type="text"],
+form input[type="email"],
+form textarea,
+form select {
+  padding: 0.6rem;
+  margin: 0.5rem;
+  font-size: 1.4rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+form input[type="number"]:focus,
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form textarea:focus,
+form select:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  outline: none;
+}
+
+.play-again {
+  padding: 1rem !important;
+}
+
+/* Styling för meddelande i spelet */
+.game-message {
+  padding: 1rem;
+  border-radius: 5px;
+  text-align: center;
   margin: 1rem 0;
 }
 
-/* Styling för validering */
+/* Standardmeddelande med svart text */
+.default-message {
+  color: #333;
+}
+
+/* Meddelande för rätt svar (grön text) */
+.success-message {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+/* Meddelande för fel svar (röd text) */
+.error-message {
+  color: #da0f0f;
+  font-weight: bold;
+}
+
+/* Styling för validering i formulär */
 .validation-container {
   font-weight: bold;
   color: #da0f0f;
+  font-size: 1.3rem;
+  margin: 0.5rem 0;
 }
 
 /* Styling för regler */
