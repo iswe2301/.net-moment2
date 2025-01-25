@@ -4,32 +4,41 @@
     ViewData["Title"] = "Spela"; // Titel på sidan
 }
 
-<!-- Visa titel -->
-<h1>@ViewData["Title"]</h1>
+<section>
+    <!-- Visa titel -->
+    <h2>@ViewData["Title"]</h2>
 
-<!-- Visa reglerna för spelet genom partial view -->
-<h2>Spelregler</h2>
-@await Html.PartialAsync("_Rules")
+    <!-- Visa reglerna för spelet genom partial view -->
+    <h3>Spelregler</h3>
+    @await Html.PartialAsync("_Rules")
 
-<!-- Visa meddelande från modellen -->
-<p>@Model.Message</p>
+    <div class="game-container">
+        <h3>Börja spela</h3>
+        <!-- Visa meddelande från modellen -->
+        <p class="game-message">@Model.Message</p>
 
-<!-- Kontrollera om CanPlayAgain är true -->
-@if (Model.CanPlayAgain)
-{
-    <!-- Visa knappen för att Spela igen -->
-    <form method="post" asp-controller="Site" asp-action="PlayAgain">
-        <button type="submit">Spela igen</button>
-    </form>
-}
-else
-{
-    <!-- Formulär för att mata in ny gissning -->
-    <form method="post" asp-controller="Site" asp-action="GuessNumber">
-        <label for="guess">Nummer</label>
-        <input type="number" id="guess" name="Guess" />
-        <!-- Visa valideringsmeddelande -->
-        <span asp-validation-for="Guess"></span>
-        <button type="submit">Gissa</button>
-    </form>
-}
+        <!-- Kontrollera om CanPlayAgain är true -->
+        @if (Model.CanPlayAgain)
+        {
+            <!-- Visa knappen för att Spela igen -->
+            <form method="post" asp-controller="Site" asp-action="PlayAgain">
+                <button type="submit">Spela igen</button>
+            </form>
+        }
+        else
+        {
+            <!-- Formulär för att mata in ny gissning -->
+            <form method="post" asp-controller="Site" asp-action="GuessNumber">
+                <div class="form-container">
+                    <label for="guess">Nummer</label>
+                    <input type="number" id="guess" name="Guess" />
+                    <button type="submit" class="button">Gissa</button>
+                </div>
+                <div class="validation-container">
+                    <!-- Visa valideringsmeddelande -->
+                    <span asp-validation-for="Guess"></span>
+                </div>
+            </form>
+        }
+    </div>
+</section>
